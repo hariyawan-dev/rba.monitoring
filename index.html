@@ -866,6 +866,36 @@
     }
 
     // ==========================================
+    // FITUR SORTING (URUTKAN DATA)
+    // ==========================================
+    function handleSort() {
+        const val = document.getElementById('sortSelect').value;
+        
+        if (val === 'default') {
+            allData.sort((a, b) => a.rowIndex - b.rowIndex); // Kembali ke urutan sheet
+        } else if (val === 'nama_asc') {
+            allData.sort((a, b) => a.Nama_Produk.localeCompare(b.Nama_Produk));
+        } else if (val === 'nama_desc') {
+            allData.sort((a, b) => b.Nama_Produk.localeCompare(a.Nama_Produk));
+        } else if (val === 'tgl_asc' || val === 'tgl_desc') {
+            allData.sort((a, b) => {
+                const parseDate = (d) => {
+                    if(!d || d === '-') return new Date(8640000000000000); // Lempar data kosong ke bawah
+                    if(d instanceof Date) return d;
+                    const p = d.split('/');
+                    return p.length === 3 ? new Date(p[2], p[1]-1, p[0]) : new Date(8640000000000000);
+                };
+                const dateA = parseDate(a.Tgl_Berlaku).getTime();
+                const dateB = parseDate(b.Tgl_Berlaku).getTime();
+                return val === 'tgl_asc' ? dateA - dateB : dateB - dateA;
+            });
+        }
+        
+        renderData(); // Render ulang tampilan list & grid
+        filterContent(); // Terapkan pencarian (jika kolom teks sedang terisi)
+    }
+
+    // ==========================================
     // FITUR EXPORT PDF (LANDSCAPE) & PRINT PREVIEW
     // ==========================================
     function exportPDF() {
