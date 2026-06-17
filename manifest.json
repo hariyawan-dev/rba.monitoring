@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "Sistem Monitoring Izin Edar",
   "short_name": "SIMEDAR-MSS",
   "description": "Database Manajemen Produk dan Izin Edar Sari Sedap",
@@ -9,13 +10,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "logo-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "logo-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -23,13 +24,13 @@
   ],
   "screenshots": [
     {
-      "src": "logo.png",
+      "src": "logo-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
-      "src": "logo.png",
+      "src": "logo-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "narrow"
