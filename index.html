@@ -6,10 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sistem Monitoring Izin Edar | Sari Sedap</title>
   
-  <!-- CSS & Font -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e40af">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
   
-  <!-- Library untuk Export PDF & Excel -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -67,14 +70,12 @@
 </head>
 <body class="font-sans text-gray-900 overflow-x-hidden">
 
-  <!-- Overlay Loading -->
   <div id="loadingOverlay">
     <div class="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent mb-4"></div>
     <p class="font-bold uppercase tracking-widest text-sm">Sedang Memproses...</p>
     <p id="loadingStatus" class="text-xs mt-2 opacity-70 italic"></p>
   </div>
 
-  <!-- Section Login -->
   <div id="loginSection" class="login-page min-h-screen items-center justify-center p-4">
     <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
       <div class="text-center mb-8">
@@ -83,7 +84,6 @@
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mt-1">Database Manajemen Produk</p>
       </div>
 
-      <!-- Kamera Scanner Terintegrasi -->
       <a href="https://sim-edar-scanner.pages.dev" target="_blank" class="w-full mb-6 bg-blue-50 border border-blue-100 text-blue-600 p-4 rounded-2xl hover:bg-blue-100 transition flex items-center justify-center gap-3 no-underline">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1-1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
         <span class="font-black uppercase text-xs tracking-widest">Scan QR / Barcode Produk</span>
@@ -106,9 +106,7 @@
     </div>
   </div>
 
-  <!-- Main Application -->
   <div id="mainApp" class="main-app flex-col min-h-screen">
-    <!-- Navbar Atas -->
     <nav class="bg-white text-gray-800 px-4 py-4 sm:px-8 border-b border-gray-100 flex justify-between items-center sticky top-0 z-40 backdrop-filter backdrop-blur-lg bg-opacity-90">
       <div class="flex items-center gap-3">
         <img src="https://lh3.googleusercontent.com/d/1orYC5oxhMS_lbQEuH2OwUZd2amyTZP5q" alt="Logo" class="h-10 w-auto object-contain" onerror="this.src='https://via.placeholder.com/40?text=L'">
@@ -124,7 +122,6 @@
       </div>
     </nav>
 
-    <!-- Navigasi Tab -->
     <div class="bg-white px-4 sm:px-8 flex gap-6 border-b border-gray-100 overflow-x-auto">
         <button id="tab-produk" onclick="switchTab('produk')" class="py-4 text-[10px] font-black uppercase border-b-2 border-blue-600 text-blue-600 tracking-widest transition-colors whitespace-nowrap">
             Katalog Produk
@@ -135,10 +132,8 @@
         </button>
     </div>
 
-    <!-- Area Konten Utama -->
     <main class="flex-1 overflow-y-auto p-4 md:p-8">
         
-        <!-- SECTION: PRODUK -->
         <section id="section-produk" class="tab-content">
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 gap-4">
                 <div class="admin-only" id="adminControl">
@@ -152,12 +147,10 @@
                 </div>
             </div>
 
-            <!-- Area Search, Sort, dan Export -->
             <div class="mb-6 flex flex-col md:flex-row gap-3">
                 <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Cari nama, MD, atau kode..." class="flex-1 px-6 py-4 bg-white border border-gray-100 rounded-3xl shadow-sm outline-none focus:ring-2 focus:ring-blue-100 transition text-sm">
                 
                 <div class="flex gap-2 items-center flex-wrap sm:flex-nowrap">
-                    <!-- Dropdown Sortir -->
                     <select id="sortSelect" onchange="handleSort()" class="px-4 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm text-[10px] font-black uppercase text-gray-500 outline-none focus:ring-2 focus:ring-blue-100">
                         <option value="default">Urutkan: Default</option>
                         <option value="nama_asc">Nama (A-Z)</option>
@@ -166,7 +159,6 @@
                         <option value="tgl_desc">Tgl Berlaku (Terlama)</option>
                     </select>
                     
-                    <!-- Tombol Export Excel & PDF (Tampil hanya untuk Admin) -->
                     <div class="admin-only flex gap-2">
                         <button onclick="exportExcel()" class="bg-green-600 text-white px-4 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-green-700 transition">
                             Excel
@@ -178,7 +170,6 @@
                 </div>
             </div>
 
-            <!-- View: List -->
             <div id="listViewContainer" class="bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100 fade-in">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-100">
@@ -196,7 +187,6 @@
                 </div>
             </div>
 
-            <!-- View: Grid -->
             <div id="gridViewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 fade-in"></div>
             
             <div id="emptyState" class="hidden py-24 text-center">
@@ -204,10 +194,8 @@
             </div>
         </section>
 
-        <!-- SECTION: DISKUSI -->
         <section id="section-diskusi" class="tab-content hidden">
             <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Form Diskusi -->
                 <div class="lg:col-span-4">
                     <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100 sticky top-4">
                         <h3 class="font-black text-[10px] text-blue-600 uppercase mb-5 tracking-widest italic">Mulai Diskusi Baru</h3>
@@ -227,7 +215,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- List Diskusi -->
                 <div class="lg:col-span-8">
                     <div id="listDiskusiContainer" class="space-y-4"></div>
                 </div>
@@ -236,22 +223,20 @@
     </main>
   </div>
 
-  <!-- MODAL: DETAIL PRODUK -->
   <div id="modalDetail" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center p-0 sm:p-4 z-50 backdrop-filter backdrop-blur-sm">
     <div class="bg-white sm:rounded-3xl w-full max-w-4xl modal-scroll shadow-2xl relative h-full sm:h-auto">
       <div class="sticky top-0 bg-white p-4 flex justify-end z-10 border-b sm:border-none">
-          <button onclick="toggleModal('modalDetail')" class="text-gray-400 hover:text-red-500 transition-colors text-3xl font-light px-2">&times;</button>
+          <button onclick="toggleModal('modalDetail')" class="text-gray-400 hover:text-red-500 transition-colors text-3xl font-light px-2">×</button>
       </div>
       <div id="detailContent" class="p-6 sm:p-10 grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </div>
   </div>
 
-  <!-- MODAL: FORM PRODUK (TAMBAH/EDIT) -->
   <div id="modalForm" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white sm:rounded-3xl w-full max-w-2xl modal-scroll p-6 sm:p-10 shadow-2xl h-full sm:h-auto">
       <div class="flex justify-between items-center mb-6">
         <h3 id="formTitle" class="text-xl font-black text-blue-800 uppercase tracking-tighter">Registrasi Produk</h3>
-        <button onclick="toggleModal('modalForm')" class="text-gray-400 text-3xl hover:text-red-500">&times;</button>
+        <button onclick="toggleModal('modalForm')" class="text-gray-400 text-3xl hover:text-red-500">×</button>
       </div>
       <form id="productForm" onsubmit="submitForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <input type="hidden" name="rowIndex" id="editRowIndex">
@@ -276,7 +261,6 @@
         <div class="space-y-1"><label class="text-[10px] font-black uppercase text-gray-400">Tgl Reorder</label><input type="date" name="tglReorder" id="fTglReorder" class="w-full p-3 bg-gray-50 rounded-xl"></div>
         
         <div class="space-y-1"><label class="text-[10px] font-black uppercase text-gray-400">Jenis Kemasan</label><input type="text" name="jenisKemasan" id="fJenisKemasan" class="w-full p-3 bg-gray-50 rounded-xl"></div>
-        <!-- Input Baru Spesifikasi Kemasan -->
         <div class="space-y-1"><label class="text-[10px] font-black uppercase text-gray-400">Spesifikasi Kemasan</label><input type="text" name="spesifikasiKemasan" id="fSpesifikasiKemasan" class="w-full p-3 bg-gray-50 rounded-xl"></div>
         
         <div class="space-y-1"><label class="text-[10px] font-black uppercase text-gray-400">Kode Kemasan</label><input type="text" name="kodeKemasan" id="fKodeKemasan" class="w-full p-3 bg-gray-50 rounded-xl"></div>
@@ -293,7 +277,6 @@
     </div>
   </div>
   
-  <!-- MODAL: DISKUSI PUBLIK (PRE-LOGIN) -->
   <div id="modalPublicDiskusi" class="fixed inset-0 bg-black bg-opacity-60 z-[300] hidden items-center justify-center p-4">
       <div class="bg-white w-full max-w-lg rounded-[3rem] p-8 shadow-2xl">
           <div class="flex justify-between items-center mb-6"><h2 class="font-black text-blue-900 uppercase text-sm italic">Pusat Bantuan</h2><button onclick="togglePublicDiskusi(false)" class="text-gray-400 text-2xl">✕</button></div>
@@ -314,9 +297,6 @@
   </div>
 
   <script>
-    // ==============================================================
-    // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI!
-    // ==============================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbwn_7GkuH39LE9EpgwyJcGG3afyH65DUTSKIeGFUTwr2txiPuaPhivyLNbitvfxDdhDDQ/exec";
 
     var allData = [];
@@ -324,7 +304,6 @@
     var selectedPhotos = []; 
     const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' /%3E%3C/svg%3E";
 
-    // --- HELPER UNTUK BERKOMUNIKASI DENGAN BACKEND GAS (CROSS-ORIGIN) ---
     async function apiRequest(action, payload = {}, method = 'POST') {
       try {
         if (method === 'GET') {
@@ -346,7 +325,6 @@
       }
     }
 
-    // --- UTILITIES ---
     function showLoading(t) { document.getElementById('loadingOverlay').style.display='flex'; document.getElementById('loadingStatus').innerText=t||''; }
     function hideLoading() { document.getElementById('loadingOverlay').style.display='none'; }
     function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
@@ -354,8 +332,15 @@
       document.getElementById(labelId).innerText = input.files.length > 0 ? input.files[0].name : "Pilih File";
     }
 
-    // --- DETEKSI KODE SCANNER DARI URL ---
+    // --- MANAJEMEN EVENT LOAD (TERMASUK REGISTER PWA SERVICE WORKER) ---
     window.addEventListener('load', () => {
+      // REGISTRASI SERVICE WORKER PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('PWA Service Worker Berhasil Didaftarkan'))
+          .catch(err => console.error('PWA Service Worker Gagal', err));
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const scannedCode = urlParams.get('code') || urlParams.get('scannedData');
       if (scannedCode) {
@@ -381,7 +366,6 @@
       }
     }
 
-    // --- LOGIN ---
     async function handleLogin(mode) {
       const u = mode === 'admin' ? document.getElementById('username').value : 'viewer';
       const p = mode === 'admin' ? document.getElementById('password').value : '';
@@ -412,7 +396,6 @@
       }
     }
 
-    // --- TABS & VIEWS ---
     function switchTab(tab) {
         ['produk', 'diskusi'].forEach(s => {
             const sec = document.getElementById(`section-${s}`);
@@ -431,6 +414,7 @@
         if(tab === 'diskusi') loadDiskusi();
     }
 
+    rel=
     function switchView(v) {
       const isList = v === 'list';
       document.getElementById('btnListView').classList.toggle('view-active', isList);
@@ -442,7 +426,6 @@
       else { g.classList.remove('hidden'); g.classList.add('active-grid'); }
     }
 
-    // --- FITUR DISKUSI ---
     async function simpanDiskusi(isPublic = false) {
         const prefix = isPublic ? 'pub_' : 'disc_';
         const nama = document.getElementById(prefix + 'nama').value;
@@ -597,7 +580,6 @@
         show ? m.classList.replace('hidden', 'flex') : m.classList.replace('flex', 'hidden');
     }
 
-    // --- FITUR PRODUK ---
     async function loadData() {
       showLoading("Sinkronisasi...");
       try {
@@ -663,7 +645,6 @@
       });
     }
 
-    // --- FUNGSI DETAIL & FORM ---
     function showDetail(index) {
       const item = allData[index];
       const isAdmin = (currentRole === 'admin');
@@ -695,7 +676,6 @@
 
       const tglBerlakuText = item.Tgl_Berlaku instanceof Date ? item.Tgl_Berlaku.toLocaleDateString('id-ID') : item.Tgl_Berlaku;
 
-      // MODAL DETAIL KINI MENAMPILKAN SPESIFIKASI KEMASAN
       document.getElementById('detailContent').innerHTML = `
         <div class="md:col-span-1 space-y-4">
           ${sliderHTML}
@@ -752,7 +732,7 @@
         const container = document.getElementById('multiPhotoPreview');
         container.innerHTML = selectedPhotos.map((photo, i) => `
             <div class="bg-white border rounded-xl p-2 relative">
-                <button type="button" onclick="removePhoto(${i})" class="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center shadow-lg z-10">&times;</button>
+                <button type="button" onclick="removePhoto(${i})" class="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center shadow-lg z-10">×</button>
                 <img src="data:${photo.mimeType};base64,${photo.data}" class="w-full h-24 object-cover rounded-lg mb-2">
                 <input type="text" placeholder="Catatan foto..." value="${photo.note || ''}" onchange="updatePhotoNote(${i}, this.value)" class="w-full text-[9px] p-1.5 bg-gray-50 border rounded-md outline-none">
             </div>
@@ -789,7 +769,7 @@
       document.getElementById('fMd').value = item.Nomor_MD;
       document.getElementById('fNomorPengajuan').value = item.Nomor_Pengajuan || '';
       document.getElementById('fJenisKemasan').value = item.Jenis_Kemasan || '';
-      document.getElementById('fSpesifikasiKemasan').value = item.Spesifikasi_Kemasan || ''; // NILAI BARU
+      document.getElementById('fSpesifikasiKemasan').value = item.Spesifikasi_Kemasan || '';
       document.getElementById('fKodeKemasan').value = item.Kode_Kemasan || '';
       document.getElementById('fBarcodeTeks').value = item.Barcode_Produk || '';
       document.getElementById('fCatatan').value = item.Catatan_Admin || '';
@@ -822,7 +802,6 @@
         });
       };
 
-      // TAMBAHAN SPESIFIKASI KEMASAN PADA PAYLOAD
       const payload = {
         rowIndex: rIdx, nama: f.nama.value, kode: f.kode.value, nomorMd: f.nomorMd.value,
         nomorPengajuan: f.nomorPengajuan.value, tglBerlaku: f.tglBerlaku.value, tglReorder: f.tglReorder.value,
@@ -865,14 +844,10 @@
       document.getElementById('emptyState').classList.toggle('hidden', count > 0 || val === '');
     }
 
-    // ==========================================
-    // FITUR SORTING (URUTKAN DATA)
-    // ==========================================
     function handleSort() {
         const val = document.getElementById('sortSelect').value;
-        
         if (val === 'default') {
-            allData.sort((a, b) => a.rowIndex - b.rowIndex); // Kembali ke urutan sheet
+            allData.sort((a, b) => a.rowIndex - b.rowIndex);
         } else if (val === 'nama_asc') {
             allData.sort((a, b) => a.Nama_Produk.localeCompare(b.Nama_Produk));
         } else if (val === 'nama_desc') {
@@ -880,7 +855,7 @@
         } else if (val === 'tgl_asc' || val === 'tgl_desc') {
             allData.sort((a, b) => {
                 const parseDate = (d) => {
-                    if(!d || d === '-') return new Date(8640000000000000); // Lempar data kosong ke bawah
+                    if(!d || d === '-') return new Date(8640000000000000);
                     if(d instanceof Date) return d;
                     const p = d.split('/');
                     return p.length === 3 ? new Date(p[2], p[1]-1, p[0]) : new Date(8640000000000000);
@@ -890,31 +865,24 @@
                 return val === 'tgl_asc' ? dateA - dateB : dateB - dateA;
             });
         }
-        
-        renderData(); // Render ulang tampilan list & grid
-        filterContent(); // Terapkan pencarian (jika kolom teks sedang terisi)
+        renderData();
+        filterContent();
     }
 
-    // ==========================================
-    // FITUR EXPORT PDF (LANDSCAPE) & PRINT PREVIEW
-    // ==========================================
     function exportPDF() {
         showLoading("Menyiapkan Preview PDF...");
         setTimeout(() => {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('landscape');
-            
             doc.setFontSize(14);
             doc.text("Rekap Database Produk - Sistem Izin Edar", 14, 15);
             doc.setFontSize(10);
             doc.setTextColor(100);
             doc.text("Tanggal Export: " + new Date().toLocaleDateString('id-ID'), 14, 22);
             
-            // Penambahan Kolom "Barcode Teks" di bagian paling akhir
             const tableColumn = ["No", "Nama Produk", "Kode Produk", "Nomor MD", "Tgl Berlaku", "Jenis Kemasan", "Spesifikasi", "Barcode Teks"];
             const tableRows = [];
 
-            // Hanya Export baris yang terlihat dari hasil pencarian (atau semuanya jika kosong)
             const visibleRows = allData.filter((item, i) => {
                 const rowEl = document.querySelectorAll("#tableBody tr")[i];
                 return rowEl && rowEl.style.display !== "none";
@@ -926,7 +894,7 @@
                     i + 1, item.Nama_Produk, item.Kode_Produk, item.Nomor_MD,
                     item.Tgl_Berlaku instanceof Date ? item.Tgl_Berlaku.toLocaleDateString('id-ID') : item.Tgl_Berlaku,
                     item.Jenis_Kemasan || "-", item.Spesifikasi_Kemasan || "-",
-                    item.Barcode_Produk || "-" // Memasukkan data Barcode
+                    item.Barcode_Produk || "-"
                 ];
                 tableRows.push(rowData);
             });
@@ -937,18 +905,13 @@
                 headStyles: { fillColor: [30, 64, 175] }
             });
 
-            // Logika baru untuk Print Preview
             const pdfBlob = doc.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
-            window.open(pdfUrl, '_blank'); // Membuka PDF di Tab Baru (seperti fitur Print Preview browser)
-            
+            window.open(pdfUrl, '_blank');
             hideLoading();
         }, 800);
     }
 
-    // ==========================================
-    // FITUR EXPORT EXCEL
-    // ==========================================
     function exportExcel() {
         showLoading("Menyiapkan Excel...");
         setTimeout(() => {
@@ -973,7 +936,6 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Rekap Data");
             XLSX.writeFile(wb, "Rekap_Database_Produk.xlsx");
-            
             hideLoading();
         }, 800);
     }
