@@ -43,9 +43,6 @@
     }
     .file-input-wrapper:hover { border-color: var(--blue-primary); background: #eff6ff; }
     
-    #gridViewContainer { display: none; }
-    #gridViewContainer.active-grid { display: grid; }
-    
     .fade-in { animation: fadeIn 0.3s ease-in; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -187,7 +184,7 @@
                 </div>
             </div>
 
-            <div id="gridViewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 fade-in"></div>
+            <div id="gridViewContainer" class="hidden grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 fade-in"></div>
             
             <div id="emptyState" class="hidden py-24 text-center">
                 <p class="text-gray-400 text-sm font-medium italic uppercase tracking-widest">Data tidak ditemukan.</p>
@@ -414,16 +411,25 @@
         if(tab === 'diskusi') loadDiskusi();
     }
 
-    rel=
     function switchView(v) {
       const isList = v === 'list';
       document.getElementById('btnListView').classList.toggle('view-active', isList);
+      document.getElementById('btnListView').classList.toggle('text-gray-400', !isList);
       document.getElementById('btnGridView').classList.toggle('view-active', !isList);
-      document.getElementById('listViewContainer').classList.toggle('hidden', !isList);
+      document.getElementById('btnGridView').classList.toggle('text-gray-400', isList);
       
-      const g = document.getElementById('gridViewContainer');
-      if(isList) { g.classList.add('hidden'); g.classList.remove('active-grid'); } 
-      else { g.classList.remove('hidden'); g.classList.add('active-grid'); }
+      const listContainer = document.getElementById('listViewContainer');
+      const gridContainer = document.getElementById('gridViewContainer');
+
+      if (isList) {
+        listContainer.classList.remove('hidden');
+        gridContainer.classList.add('hidden');
+        gridContainer.classList.remove('grid');
+      } else {
+        listContainer.classList.add('hidden');
+        gridContainer.classList.remove('hidden');
+        gridContainer.classList.add('grid');
+      }
     }
 
     async function simpanDiskusi(isPublic = false) {
