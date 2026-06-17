@@ -184,7 +184,8 @@
                 </div>
             </div>
 
-            <div id="gridViewContainer" class="hidden grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 fade-in"></div>
+            <!-- Mengganti kelas 'hidden' bawaan dengan inline style display none awal yang aman -->
+            <div id="gridViewContainer" style="display: none;" class="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 fade-in"></div>
             
             <div id="emptyState" class="hidden py-24 text-center">
                 <p class="text-gray-400 text-sm font-medium italic uppercase tracking-widest">Data tidak ditemukan.</p>
@@ -331,11 +332,13 @@
 
     // --- MANAJEMEN EVENT LOAD (TERMASUK REGISTER PWA SERVICE WORKER) ---
     window.addEventListener('load', () => {
-      // REGISTRASI SERVICE WORKER PWA
-      if ('serviceWorker' in navigator) {
+      // REGISTRASI SERVICE WORKER PWA DENGAN PENGECEKAN PROTOKOL
+      if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
         navigator.serviceWorker.register('./sw.js')
           .then(() => console.log('PWA Service Worker Berhasil Didaftarkan'))
-          .catch(err => console.error('PWA Service Worker Gagal', err));
+          .catch(err => console.warn('PWA Service Worker Gagal', err));
+      } else {
+          console.log('PWA Service Worker dilewati (berjalan di environment mode preview/lokal tanpa HTTP/HTTPS).');
       }
 
       const urlParams = new URLSearchParams(window.location.search);
@@ -411,6 +414,7 @@
         if(tab === 'diskusi') loadDiskusi();
     }
 
+    // Menggunakan inline style direct manipulation untuk menghindari hilangnya class di production / deploy environment
     function switchView(v) {
       const isList = v === 'list';
       document.getElementById('btnListView').classList.toggle('view-active', isList);
@@ -422,13 +426,18 @@
       const gridContainer = document.getElementById('gridViewContainer');
 
       if (isList) {
+        // Manipulasi Display secara langsung menggunakan priority '!important' agar mengesampingkan stylesheet manapun
+        listContainer.style.setProperty('display', 'block', 'important');
+        gridContainer.style.setProperty('display', 'none', 'important');
+        
         listContainer.classList.remove('hidden');
         gridContainer.classList.add('hidden');
-        gridContainer.classList.remove('grid');
       } else {
+        listContainer.style.setProperty('display', 'none', 'important');
+        gridContainer.style.setProperty('display', 'grid', 'important');
+        
         listContainer.classList.add('hidden');
         gridContainer.classList.remove('hidden');
-        gridContainer.classList.add('grid');
       }
     }
 
@@ -850,6 +859,7 @@
       document.getElementById('emptyState').classList.toggle('hidden', count > 0 || val === '');
     }
 
+    // Menggunakan fungsi asinkron perbandingan tanggal yang aman
     function handleSort() {
         const val = document.getElementById('sortSelect').value;
         if (val === 'default') {
