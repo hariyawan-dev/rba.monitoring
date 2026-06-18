@@ -154,8 +154,8 @@
                     </button>
                 </div>
                 <div class="flex items-center bg-white rounded-2xl p-1 shadow-sm border border-gray-100 self-center">
-                    <button id="btnListView" onclick="switchView('list')" class="px-5 py-2.5 rounded-xl text-[10px] font-black transition view-active uppercase">List</button>
-                    <button id="btnGridView" onclick="switchView('grid')" class="px-5 py-2.5 rounded-xl text-[10px] font-black transition text-gray-400 uppercase">Grid</button>
+                    <button id="btnListView" onclick="window.switchView('list')" class="px-5 py-2.5 rounded-xl text-[10px] font-black transition view-active uppercase">List</button>
+                    <button id="btnGridView" onclick="window.switchView('grid')" class="px-5 py-2.5 rounded-xl text-[10px] font-black transition text-gray-400 uppercase">Grid</button>
                 </div>
             </div>
 
@@ -448,7 +448,8 @@
     }
 
     // --- Fungsi Beralih Mode View Berdasarkan Struktur Original yang Terbukti Normal ---
-    function switchView(v) {
+    // Diperbaiki: Menggunakan window.switchView agar dapat diakses secara global di semua environment
+    window.switchView = function(v) {
       const isList = v === 'list';
       
       // Update styling untuk Tombol
@@ -470,7 +471,7 @@
         gridContainer.classList.remove('hidden');
         gridContainer.classList.add('active-grid');
       }
-    }
+    };
 
     // --- FITUR DISKUSI ---
     async function simpanDiskusi(isPublic = false) {
